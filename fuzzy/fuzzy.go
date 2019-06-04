@@ -8,7 +8,7 @@ import (
 )
 
 type Target interface {
-	String()
+	String() string
 }
 
 var noop = func(r rune) rune { return r }
@@ -139,7 +139,7 @@ func RankFindAdv(source string, targets []Target) Ranks {
 	var r Ranks
 
 	for index, target := range targets {
-		targer_str := target.String()
+		target_str := target.String()
 		if match(source, target_str, noop) {
 			distance := LevenshteinDistance(source, target_str)
 			r = append(r, Rank{source, target_str, distance, index})
