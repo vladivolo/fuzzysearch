@@ -139,9 +139,10 @@ func RankFindAdv(source string, targets []Target) Ranks {
 	var r Ranks
 
 	for index, target := range targets {
-		if match(source, target.String(), noop) {
-			distance := LevenshteinDistance(source, target.String())
-			r = append(r, Rank{source, target.String(), distance, index})
+		targer_str := target.String()
+		if match(source, target_str, noop) {
+			distance := LevenshteinDistance(source, target_str)
+			r = append(r, Rank{source, target_str, distance, index})
 		}
 	}
 
