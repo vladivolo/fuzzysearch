@@ -135,11 +135,17 @@ func RankFind(source string, targets []string) Ranks {
 	return r
 }
 
-func RankFindAdv(source string, targets []Target) Ranks {
+func RankFindAdv(source string, targets []interface{}) Ranks {
 	var r Ranks
+	var target_str string
 
-	for index, target := range targets {
-		target_str := target.String()
+	for index, target_if := range targets {
+		target, ok := target_if.(Target)
+		if !ok {
+			continue
+		}
+		target_str = target.String()
+
 		if match(source, target_str, noop) {
 			distance := LevenshteinDistance(source, target_str)
 			r = append(r, Rank{source, target_str, distance, index})
