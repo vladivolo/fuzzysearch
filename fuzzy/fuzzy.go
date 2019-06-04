@@ -7,6 +7,10 @@ import (
 	"unicode/utf8"
 )
 
+type Target interface {
+	String()
+}
+
 var noop = func(r rune) rune { return r }
 
 // Match returns true if source matches target using a fuzzy-searching
@@ -128,6 +132,19 @@ func RankFind(source string, targets []string) Ranks {
 			r = append(r, Rank{source, target, distance, index})
 		}
 	}
+	return r
+}
+
+func RankFindAdv(source string, targets []Target) Ranks {
+	var r Ranks
+
+	for index, target := range targets {
+		if match(source, target.String(), noop) {
+			distance := LevenshteinDistance(source, target.String())
+			r = append(r, Rank{source, target.String(), distance, index})
+		}
+	}
+
 	return r
 }
 
