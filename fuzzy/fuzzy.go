@@ -7,8 +7,9 @@ import (
 	"unicode/utf8"
 )
 
-type Target interface {
-	String() string
+type Targets interface {
+	String(int) string
+	Len() int
 }
 
 var noop = func(r rune) rune { return r }
@@ -135,18 +136,14 @@ func RankFind(source string, targets []string) Ranks {
 	return r
 }
 
-func RankFindAdv(source string, targets_if interface{}) Ranks {
+func RankFindAdv(source string, targets Targets) Ranks {
 	var r Ranks
 	var target_str string
 
-	targets, ok := targets_if.([]Target)
-	if !ok {
-		return Ranks{}
-	}
+	len := targets.Len()
 
-	for index, target := range targets {
-		target_str = target.String()
-
+	for index := 0; index < len; index++ {
+		target_str = targets.String(index)
 		if match(source, target_str, noop) {
 			distance := LevenshteinDistance(source, target_str)
 			r = append(r, Rank{source, target_str, distance, index})
