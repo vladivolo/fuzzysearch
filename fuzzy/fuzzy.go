@@ -141,7 +141,7 @@ func RankFindAdv(source string, targets_if interface{}) Ranks {
 
 	targets, ok := targets_if.([]Target)
 	if !ok {
-		return Rank{}
+		return Ranks{}
 	}
 
 	for index, target := range targets {
